@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Xadrez das Cinzas — Online</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap">
+<title>Xadrez das Cinzas — Arena Interativa Online</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=IM+Fell+English:ital@0;1&display=swap">
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
 :root{
   color-scheme:dark;
-  --bg:#0a0807;--l:#322b24;--d:#1c1713;--gold:#c9a74f;--bone:#e6d9b0;
-  --ember:#e0662a;--blood:#a3201a;--ash:#8d8576;--heal:#9ad39a;
+  --bg:#0a0807;--panel:#130f0c;--panel-2:#1a1410;--l:#322b24;--d:#1c1713;
+  --gold:#c9a74f;--bone:#e6d9b0;--ember:#e0662a;--blood:#a3201a;--ash:#8d8576;--heal:#9ad39a;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px)
@@ -33,9 +33,9 @@ h1{
 
 .layout{
   display:grid;
-  grid-template-columns:minmax(0,540px) minmax(270px,330px);
+  grid-template-columns:minmax(0,540px) minmax(280px,350px);
   gap:18px;
-  width:min(96vw,900px);
+  width:min(96vw,920px);
   align-items:start;
 }
 @media(max-width:860px){
@@ -45,7 +45,7 @@ h1{
 .ctl{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
 input,select,button{
   font-family:Cinzel,serif;letter-spacing:.04em;color:var(--bone);
-  background:#1d1610;border:1px solid var(--gold);padding:7px 10px;font-size:.78rem;
+  background:#1d1610;border:1px solid var(--gold);border-radius:5px;padding:7px 10px;font-size:.78rem;
   transition:all .15s ease
 }
 input{width:10.5em}
@@ -54,25 +54,25 @@ button:hover:not(:disabled){background:#2c2013;box-shadow:0 0 12px rgba(201,167,
 button:disabled{opacity:.38;cursor:default}
 
 .net-bar{
-  border:1px solid #5c4928;background:linear-gradient(#1b140d,#100c08);
+  border:1px solid #5c4928;border-radius:7px;background:linear-gradient(#1b140d,#100c08);
   padding:10px 12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px
 }
 .net-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;justify-content:center}
 .badge{
   display:inline-flex;align-items:center;gap:6px;font-family:Cinzel,serif;
-  font-size:.75rem;color:var(--ash);padding:3px 8px;border:1px solid #3c3122;background:#0d0a07
+  font-size:.75rem;color:var(--ash);padding:3px 9px;border-radius:999px;border:1px solid #3c3122;background:#0d0a07
 }
 .dot{width:8px;height:8px;border-radius:50%;background:#666}
 .dot.wait{background:#e0a02a;box-shadow:0 0 8px #e0a02a}
 .dot.ok{background:#52c46b;box-shadow:0 0 8px #52c46b}
 
 #boss{display:none;margin-bottom:8px;text-align:center;font-family:Cinzel,serif;color:var(--gold);letter-spacing:.12em}
-#boss i{display:block;height:9px;background:#000;border:1px solid var(--gold);margin-top:3px}
+#boss i{display:block;height:9px;background:#000;border:1px solid var(--gold);border-radius:4px;overflow:hidden;margin-top:3px}
 #boss b,.hp b{display:block;height:100%;background:linear-gradient(#d23a2a,var(--blood));transition:width .5s}
 
 .board{
   container-type:inline-size;display:grid;grid-template-columns:repeat(8,1fr);
-  aspect-ratio:1;border:3px solid var(--gold);
+  aspect-ratio:1;border:3px solid var(--gold);border-radius:6px;overflow:hidden;
   box-shadow:0 0 0 1px #000,0 0 40px rgba(224,102,42,.25),inset 0 0 30px #000;
   background:#000
 }
@@ -97,7 +97,7 @@ button:disabled{opacity:.38;cursor:default}
 @keyframes rage{to{text-shadow:0 0 20px #ff6a00,0 0 5px #ffb000}}
 .wp{position:absolute;right:5%;bottom:17%;width:30%;height:30%;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;z-index:3}
 .pc.w~.wp{color:var(--bone)}.pc.b~.wp{color:#e06a45}
-.hp,.sa{position:absolute;left:10%;right:10%;background:#000;display:block}
+.hp,.sa{position:absolute;left:10%;right:10%;background:#000;display:block;border-radius:2px;overflow:hidden}
 .hp{bottom:8%;height:4px}
 .sa{bottom:2%;height:3px}.sa b{display:block;height:100%;background:#cfae4a;transition:width .3s}
 .cell.sel{box-shadow:inset 0 0 0 3px var(--gold)}
@@ -109,16 +109,21 @@ button:disabled{opacity:.38;cursor:default}
 .fl.h{color:var(--heal)}
 @keyframes fl{to{transform:translateY(-120%);opacity:0}}
 
-.panel{border:1px solid #4a3e2c;background:linear-gradient(#17120e,#0f0c09);padding:12px 14px;display:grid;gap:8px}
+.panel{border:1px solid #4a3e2c;border-radius:7px;background:linear-gradient(#17120e,#0f0c09);padding:12px 14px;display:grid;gap:8px}
 .row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .nm{font-family:Cinzel,serif;font-size:1.05rem;color:var(--gold)}
-.stat,#lore{color:var(--ash);font-size:.92rem}
+.stat,#lore{color:var(--ash);font-size:.9rem}
 #lore{font-style:italic}
+.speed-pills{display:flex;gap:6px;flex-wrap:wrap}
+.sp-pill{
+  font-family:Cinzel,serif;font-size:.72rem;padding:2px 8px;border-radius:4px;
+  border:1px solid #3f3323;background:#0e0b08;color:#d8c99e
+}
 #log{min-height:2.7em;font-style:italic;line-height:1.35;color:#f0e6c8;border-top:1px solid #2b2318;padding-top:6px}
 
 /* Seletor tático de Golpe e Botão de Batalha */
 .combat-box{
-  border:1px solid #594426;background:#120d09;padding:9px;display:grid;gap:8px
+  border:1px solid #594426;border-radius:6px;background:#120d09;padding:9px;display:grid;gap:8px
 }
 .strike-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .strike-btn{
@@ -151,7 +156,7 @@ button:disabled{opacity:.38;cursor:default}
 
 /* Painel Lateral da Forja de Melhorias */
 .forge-side{
-  border:2px solid var(--gold);
+  border:2px solid var(--gold);border-radius:8px;
   background:radial-gradient(circle at 50% 0%,rgba(224,102,42,.18),transparent 65%),linear-gradient(#1a130d,#0e0b08);
   padding:14px;
   box-shadow:0 0 28px rgba(0,0,0,.7),inset 0 0 18px rgba(201,167,79,.08);
@@ -163,13 +168,13 @@ button:disabled{opacity:.38;cursor:default}
 }
 .forge-title{font-family:Cinzel,serif;font-weight:700;font-size:1rem;color:var(--gold);letter-spacing:.08em}
 .souls-pill{
-  font-family:Cinzel,serif;font-weight:700;font-size:.9rem;
-  color:#ffd97d;background:#261a0c;border:1px solid var(--gold);padding:4px 9px
+  font-family:Cinzel,serif;font-weight:700;font-size:.88rem;border-radius:999px;
+  color:#ffd97d;background:#261a0c;border:1px solid var(--gold);padding:4px 10px
 }
 .forge-sub{font-size:.82rem;color:var(--ash);font-style:italic;margin:0 0 10px}
 .upg-list{display:grid;gap:9px}
 .upg-card{
-  border:1px solid #493923;background:#140f0a;padding:9px 10px;
+  border:1px solid #493923;border-radius:6px;background:#140f0a;padding:9px 10px;
   display:flex;flex-direction:column;gap:5px
 }
 .upg-top{display:flex;justify-content:space-between;align-items:center;font-family:Cinzel,serif;font-size:.82rem}
@@ -178,30 +183,66 @@ button:disabled{opacity:.38;cursor:default}
 .upg-desc{font-size:.8rem;color:var(--ash);line-height:1.25}
 .upg-card button{width:100%;margin-top:2px;font-weight:700;padding:7px}
 
-details{margin-top:12px;color:var(--ash);border:1px solid #33291d;padding:8px 12px;background:#110d0a}
+details{margin-top:12px;color:var(--ash);border:1px solid #33291d;border-radius:6px;padding:8px 12px;background:#110d0a}
 summary{cursor:pointer;color:var(--bone);font-family:Cinzel,serif;font-size:.82rem}
 li{margin:4px 0;font-size:.88rem}
 
+/* Overlays */
 #ov,#df{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;z-index:5;animation:fade 1.4s}
 #ov{background:linear-gradient(transparent,rgba(0,0,0,.88) 30%,rgba(0,0,0,.88) 70%,transparent)}
 #df{background:rgba(0,0,0,.78);z-index:6;animation:none}
 #ov.on,#df.on{display:flex}
 @keyframes fade{from{opacity:0}}
-.bx{background:#15100c;border:1px solid var(--gold);padding:18px;max-width:350px;text-align:center}
+.bx{background:#15100c;border:1px solid var(--gold);border-radius:8px;padding:18px;max-width:350px;text-align:center}
 .bx p{margin:0 0 12px;line-height:1.4}.bx .row{justify-content:center}
 #ov h2{font-family:Cinzel,serif;font-weight:500;font-size:clamp(2rem,9vw,4.2rem);letter-spacing:.25em;margin:0;padding-left:.25em;color:var(--blood);text-shadow:0 0 30px rgba(163,32,26,.8);text-align:center}
 #ov.win h2{color:var(--gold);text-shadow:0 0 30px rgba(201,167,79,.7)}
-#bt{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:#000;z-index:7}#bt.on{display:flex;animation:bin .6s}@keyframes bin{from{clip-path:circle(0% at 50% 50%);filter:brightness(4)}to{clip-path:circle(75% at 50% 50%)}}
-#tu{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:8}#tu.on{display:flex}
-#cv{width:min(94vw,480px);aspect-ratio:4/3;border:3px solid #fff;touch-action:none;background:#000}
-#bm{font-family:Cinzel,serif;color:#fff;font-size:.85rem;text-align:center;padding:0 12px}
+
+/* ARENA DE BATALHA INTERATIVA ESTILO UNDERTALE */
+#bt{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;background:rgba(4,3,2,.96);z-index:7;padding:10px
+}
+#bt.on{display:flex;animation:bin .45s}
+@keyframes bin{from{clip-path:circle(0% at 50% 50%);filter:brightness(3)}to{clip-path:circle(85% at 50% 50%)}}
+.bt-hud{
+  width:min(95vw,520px);display:flex;justify-content:space-between;align-items:center;
+  gap:8px;background:#140f0b;border:1px solid var(--gold);border-radius:6px;padding:6px 12px;
+  font-family:Cinzel,serif;font-size:.78rem
+}
+.bt-side{display:flex;flex-direction:column;gap:2px}
+.bt-side strong{color:var(--gold);font-size:.84rem}
+.bt-side span{color:var(--ash);font-size:.72rem}
+#cv{
+  width:min(95vw,520px);aspect-ratio:4/3;border:3px solid #fff;border-radius:4px;
+  touch-action:none;background:#000;box-shadow:0 0 30px rgba(224,102,42,.25)
+}
+#bm{font-family:Cinzel,serif;color:#f5e7c2;font-size:.82rem;text-align:center;max-width:520px}
+
+/* Barra de habilidades de ataque interativo (para quem está atacando) */
+#atk-deck{
+  display:none;width:min(95vw,520px);grid-template-columns:repeat(3,1fr);gap:7px
+}
+#atk-deck.on{display:grid}
+.sk-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 6px;
+  background:linear-gradient(180deg,#261a11,#140d08);border:1px solid var(--gold);border-radius:6px;
+  text-align:center
+}
+.sk-btn strong{font-size:.76rem;color:#ffe299}
+.sk-btn small{font-family:'IM Fell English',serif;font-size:.75rem;color:var(--ash);line-height:1.15}
+.sk-btn .cost{font-size:.7rem;color:var(--ember);font-weight:700}
+.sk-btn:hover:not(:disabled){border-color:#ff945e;background:linear-gradient(180deg,#382213,#1d110a)}
+
+#tu{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:8}
+#tu.on{display:flex}
 .lv{position:absolute;top:2%;right:6%;font:700 .3em Cinzel,serif;color:var(--gold);z-index:4}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
 <h1>XADREZ DAS CINZAS</h1>
-<p class="sub">Cada peça tem uma arma, um fôlego e nenhuma piedade.</p>
+<p class="sub">Cada peça tem uma arma, um fôlego e padrões únicos de combate.</p>
 
 <div class="layout">
   <!-- COLUNA PRINCIPAL: SALA ONLINE, TABULEIRO E COMBATE -->
@@ -233,6 +274,11 @@ li{margin:4px 0;font-size:.88rem}
 
     <div class="panel" style="margin-top:12px">
       <div class="row"><span class="nm" id="nm"></span><span class="stat" id="st"></span></div>
+      <div class="speed-pills" id="sp-pills" style="display:none">
+        <span class="sp-pill" id="pill-atk"></span>
+        <span class="sp-pill" id="pill-dge"></span>
+        <span class="sp-pill" id="pill-val"></span>
+      </div>
       <div id="lore"></div>
 
       <!-- SELETOR INTUITIVO DE GOLPE E BOTÃO DE BATALHA -->
@@ -259,15 +305,13 @@ li{margin:4px 0;font-size:.88rem}
     </div>
 
     <details>
-      <summary>Como sobreviver e regras de batalha</summary>
+      <summary>Como sobreviver e regras da Arena Interativa</summary>
       <ul>
         <li>As peças se movem como no xadrez, sem roque nem en passant. Abata o Senhor inimigo.</li>
-        <li><strong>Golpe Leve vs. Pesado:</strong> Escolha abaixo do tabuleiro. O golpe leve custa 1 de fôlego; o pesado custa 2 e causa +2 de dano. Sem fôlego, a peça não ataca e sofre +2 de dano.</li>
-        <li><strong>Atacar:</strong> Selecione sua peça e clique no botão vermelho <strong>⚔️ ATACAR INIMIGO</strong> ou clique diretamente na peça inimiga marcada com ⚔.</li>
+        <li><strong>Arena Interativa (Online e Local):</strong> Quando você ataca, você controla a mira e usa as teclas <strong>[1], [2], [3]</strong> (ou os botões na tela) para disparar os <strong>3 ataques exclusivos</strong> da sua peça contra o coração do oponente em tempo real!</li>
+        <li><strong>Velocidade por Valor da Peça:</strong> Peças leves/ágeis (Peão val. 1, Arqueiro val. 3, Rainha val. 9) atacam e esquivam <strong>muito rápido</strong>. A Torre Gigante (val. 5) tem esquiva <strong>pesada e lenta</strong>, mas dispara rochas e muralhas devastadoras.</li>
         <li><strong>Backstab:</strong> Atacar por trás causa +3 de dano. Peões perfuram dois corpos, Cavaleiros envenenam, a Rainha causa sangramento e o Arqueiro atira sem sair do lugar.</li>
-        <li>✦ <strong>Fogueira</strong> cura 3 PV, restaura o fôlego e remove efeitos. ▲ <strong>Armadilha</strong> causa 2 de dano.</li>
-        <li><strong>Duelo estilo Undertale:</strong> Ao atacar, pare o marcador no centro da barra para crítico e esquive dos projéteis de volta.</li>
-        <li>Abates rendem <strong>Almas</strong> para forjar melhorias permanentes no painel ao lado.</li>
+        <li>✦ <strong>Fogueira</strong> cura 3 PV e restaura fôlego. ▲ <strong>Armadilha</strong> causa 2 de dano.</li>
       </ul>
     </details>
   </div>
@@ -286,19 +330,82 @@ li{margin:4px 0;font-size:.88rem}
 <div id="df"><div class="bx"><p id="dq"></p><div class="row">
   <button data-d="dodge">Esquivar</button><button data-d="parry">Aparar</button><button data-d="block">Bloquear</button><button data-d="none">Aguentar</button>
 </div></div></div>
-<div id="bt"><canvas id="cv" width="320" height="240"></canvas><div id="bm"></div><button id="sp" style="display:none">Poupar</button></div>
+
+<!-- ARENA DE BATALHA INTERATIVA -->
+<div id="bt">
+  <div class="bt-hud">
+    <div class="bt-side">
+      <strong id="bt-atk-name">Atacante</strong>
+      <span id="bt-atk-spd">Vel. Ataque</span>
+    </div>
+    <div style="text-align:center">
+      <span style="color:var(--ember);font-weight:700">VS</span>
+    </div>
+    <div class="bt-side" style="text-align:right">
+      <strong id="bt-def-name">Defensor</strong>
+      <span id="bt-def-spd">Vel. Esquiva</span>
+    </div>
+  </div>
+  <canvas id="cv" width="320" height="240"></canvas>
+  <div id="atk-deck"></div>
+  <div id="bm"></div>
+  <button id="sp" style="display:none">Poupar</button>
+</div>
+
 <div id="tu"><div class="bx"><p id="tp"></p><button id="tn">Próximo</button></div></div>
 <div id="ov"><h2 id="ovt"></h2><button id="rest">Descansar na fogueira</button></div>
 
 <script>
+// Atributos base + velocidades táticas (atkSpd: cadência/projéteis, dodgeSpd: agilidade do coração ♥, cd: recarga base em ms)
 const ST={
-  P:{hp:3,d:2,sm:2,w:'Lança Curta',n:'Soldado',l:'Fiel até o último fôlego. Sua lança atravessa dois corpos.'},
-  N:{hp:5,d:3,sm:2,w:'Alabarda Envenenada',n:'Cavaleiro',l:'Lâmina untada com raiz de pântano. Envenena e drena o fôlego.'},
-  B:{hp:4,d:3,sm:2,w:'Arco Lunar',n:'Arqueiro',l:'Atira de longe e nunca sai do lugar.'},
-  R:{hp:7,d:4,sm:2,w:'Martelo Colossal',n:'Torre Gigante',l:'Cada passo racha a pedra sob os pés.'},
-  Q:{hp:8,d:4,sm:3,w:'Adagas Gêmeas',n:'Rainha das Cinzas',l:'Seus cortes não param de sangrar.'},
-  K:{hp:10,d:5,sm:3,w:'Montante Real',n:'Senhor',l:'O último ember de uma coroa esquecida.'}
+  P:{hp:3,d:2,sm:2,val:1,atkSpd:1.35,dodgeSpd:3.6,cd:420,atkLabel:'Rápida (1.35x)',dgeLabel:'Muito Ágil (3.6)',
+     w:'Lança Curta',n:'Soldado',l:'Fiel até o último fôlego. Rápido para atacar e esquivar; sua lança atravessa dois corpos.'},
+  N:{hp:5,d:3,sm:2,val:3,atkSpd:1.05,dodgeSpd:3.0,cd:560,atkLabel:'Equilibrada (1.05x)',dgeLabel:'Ágil (3.0)',
+     w:'Alabarda Envenenada',n:'Cavaleiro',l:'Lâmina untada com raiz de pântano. Padrões imprevisíveis que envenenam e drenam fôlego.'},
+  B:{hp:4,d:3,sm:2,val:3,atkSpd:1.30,dodgeSpd:3.1,cd:450,atkLabel:'Veloz (1.30x)',dgeLabel:'Ágil (3.1)',
+     w:'Arco Lunar',n:'Arqueiro',l:'Dispara flechas velozes à distância sem sair do lugar.'},
+  R:{hp:7,d:4,sm:2,val:5,atkSpd:0.72,dodgeSpd:1.75,cd:820,atkLabel:'Pesada/Lenta (0.72x)',dgeLabel:'Pesada/Lenta (1.75)',
+     w:'Martelo Colossal',n:'Torre Gigante',l:'Armadura colossal: esquiva lentamente, mas esmaga a arena com rochas e muralhas.'},
+  Q:{hp:8,d:4,sm:3,val:9,atkSpd:1.45,dodgeSpd:3.8,cd:360,atkLabel:'Frenética (1.45x)',dgeLabel:'Extrema (3.8)',
+     w:'Adagas Gêmeas',n:'Rainha das Cinzas',l:'Lâminas mortais em alta velocidade. Causa sangramento contínuo.'},
+  K:{hp:10,d:5,sm:3,val:100,atkSpd:0.90,dodgeSpd:2.4,cd:660,atkLabel:'Majestosa (0.90x)',dgeLabel:'Média (2.4)',
+     w:'Montante Real',n:'Senhor',l:'O último ember de uma coroa esquecida. Conjura chamas reais e julgamentos.'}
 };
+
+// 3 Ataques Exclusivos por Peça para a Arena Interativa
+const PIECE_SKILLS={
+  P:[
+    {id:0,key:'1',name:'Estocada Rápida',cost:22,desc:'Lanças velozes direto na mira'},
+    {id:1,key:'2',name:'Chuva de Lanças',cost:34,desc:'Rajada de 3 lanças em leque'},
+    {id:2,key:'3',name:'Investida de Escudo',cost:44,desc:'Onda larga atravessando a arena'}
+  ],
+  N:[
+    {id:0,key:'1',name:'Lâmina Tóxica',cost:25,desc:'Projéteis em zigue-zague venenoso'},
+    {id:1,key:'2',name:'Salto em L',cost:36,desc:'Ataque cruzado das quinas ao alvo'},
+    {id:2,key:'3',name:'Nuvem de Pântano',cost:46,desc:'Orbe lento que expande na arena'}
+  ],
+  B:[
+    {id:0,key:'1',name:'Flecha Lunar',cost:24,desc:'Disparo rápido teleguiado na mira'},
+    {id:1,key:'2',name:'Saraivada Diagonal',cost:36,desc:'Feixes cruzados em X na caixa'},
+    {id:2,key:'3',name:'Chuva de Estrelas',cost:45,desc:'Flechas rápidas das duas laterais'}
+  ],
+  R:[
+    {id:0,key:'1',name:'Rocha Esmagadora',cost:30,desc:'Pedregulho gigante de alto impacto'},
+    {id:1,key:'2',name:'Muralha Móvel',cost:46,desc:'Barreira com só 1 brecha na mira'},
+    {id:2,key:'3',name:'Tremor de Terra',cost:42,desc:'Ondas sísmicas vindas do chão'}
+  ],
+  Q:[
+    {id:0,key:'1',name:'Dança Carmesim',cost:24,desc:'Espiral de adagas giratórias'},
+    {id:1,key:'2',name:'Corte Cruzado',cost:36,desc:'Lâminas vertical e horizontal'},
+    {id:2,key:'3',name:'Tempestade de Sangue',cost:50,desc:'Rajada intensa multidirecional'}
+  ],
+  K:[
+    {id:0,key:'1',name:'Chama Real',cost:28,desc:'Bola de fogo que se divide em duas'},
+    {id:1,key:'2',name:'Julgamento das Cinzas',cost:42,desc:'Raios verticais sobre a mira'},
+    {id:2,key:'3',name:'Coroa de Fogo',cost:52,desc:'Anel de brasas que fecha no centro'}
+  ]
+};
+
 const G={P:'♟',N:'♞',B:'♝',R:'♜',Q:'♛',K:'♚'};
 const W={
   P:'<path d="M1 9L9 1M9 1L7 1.3M9 1L8.7 3"/>',
@@ -312,15 +419,16 @@ const VAL={P:1,N:3,B:3,R:5,Q:9,K:100};
 const BF=[[3,2],[4,5]],TR=[[3,5],[4,2]];
 const STG=[{n:'Senhor das Cinzas',hp:10},{n:'Rei Sangrento',hp:16,bl:1},{n:'Carcereiro de Ferro',hp:22,dm:1}];
 const MSG=[
-  'Mensagem no chão: tente atacar pelas costas.',
-  'Mensagem no chão: cuidado, fôlego baixo à frente.',
+  'Mensagem no chão: peças leves esquivam rápido, Torres são pesadas como pedra.',
+  'Mensagem no chão: na arena de ataque, use [1], [2] e [3] para variar os golpes!',
   'Mensagem no chão: tente fogueira, mas cuidado com a armadilha.',
-  'Mensagem no chão: ah, Estus.'
+  'Mensagem no chão: atacar pelas costas ignora a esquiva do inimigo.'
 ];
 const $=id=>document.getElementById(id);
 
 let bd,turn,sel,flask,over,busy,last,hist=[],undos=3,lvl=0,mode='1',fxq=[],AC,mute=false,hv=true,camp=false,stage=0;
 let peer=null,conn=null,netReady=false,me='w',flipped=false,roomCode='';
+let activeBattle=null; // Referência da batalha em tempo real para receber disparos via WebRTC
 let U={souls:0,wd:0,vig:0,est:0,tut:0};
 try{Object.assign(U,JSON.parse(localStorage.getItem('ashchess')||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem('ashchess',JSON.stringify(U))}catch(e){}};
@@ -341,9 +449,13 @@ function snd(k){
   try{
     AC=AC||new AudioContext();
     const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
-    const P={hit:[140,.18,'sawtooth',60],parry:[1400,.25,'triangle',900],bell:[520,.9,'sine',510],die:[70,1.6,'sine',40],step:[220,.07,'square',160],crit:[90,.35,'sawtooth',30]}[k];
+    const P={
+      hit:[140,.18,'sawtooth',60],parry:[1400,.25,'triangle',900],bell:[520,.9,'sine',510],
+      die:[70,1.6,'sine',40],step:[220,.07,'square',160],crit:[90,.35,'sawtooth',30],
+      shoot:[460,.11,'triangle',220]
+    }[k];
     o.type=P[2];o.frequency.setValueAtTime(P[0],t);o.frequency.exponentialRampToValueAtTime(P[3],t+P[1]);
-    g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.001,t+P[1]);
+    g.gain.setValueAtTime(.11,t);g.gain.exponentialRampToValueAtTime(.001,t+P[1]);
     o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+P[1]);
   }catch(e){}
 }
@@ -408,58 +520,59 @@ function play(r,c,a,b){
   }
   const kind=p.sta>=2&&(hv||!human(p.s))?'h':'l';
   const back=q.s==='w'?r>a:r<a;
-  if(mode==='1'&&(human(p.s)||!(back||q.sta<1))){
+  const est=wd(p)+(kind==='h'?2:0)+(back?3:0)+(q.sta<1?2:0);
+
+  // MODO ONLINE VIA WEBRTC: Duelo interativo em tempo real!
+  if(conn&&netReady){
     busy=true;
-    battle(p,q,kind,wd(p)+(kind==='h'?2:0)+(back?3:0)+(q.sta<1?2:0),res=>{
+    // O atacante inicia a fase de mira e disparo enquanto o defensor entra na arena de esquiva simultaneamente
+    battle(p,q,kind,est,res=>{
+      busy=false;
+      if(res.spare){
+        spare(p,q);
+      }else{
+        resolve(r,c,a,b,kind,'none',res);
+      }
+    },'ONLINE_ATK',{r,c,a,b,back});
+    return;
+  }
+
+  // MODO SOLO (CONTRA O SENHOR / CAMPANHA)
+  if(mode==='1'){
+    busy=true;
+    battle(p,q,kind,est,res=>{
       busy=false;
       if(res.spare)spare(p,q);else resolve(r,c,a,b,kind,'none',res);
-    });
+    },human(p.s)?'SOLO_ATK':'SOLO_DEF',{r,c,a,b,back});
     return;
   }
+
+  // MODO 2 JOGADORES LOCAL
   if(mode==='2'){
     busy=true;
-    const es=wd(p)+(kind==='h'?2:0)+(back?3:0)+(q.sta<1?2:0);
-    battle(p,q,kind,es,r1=>{
+    battle(p,q,kind,est,r1=>{
       if(r1.spare){busy=false;spare(p,q);return}
       if(back||q.sta<1){busy=false;resolve(r,c,a,b,kind,'none',{mult:r1.mult,rip:0});return}
-      if(conn&&netReady){
-        conn.send({type:'atk',r,c,a,b,kind,m:r1.mult,es});
-        $('log').textContent='Aguardando a esquiva do oponente online…';
-        return;
-      }
-      battle(p,q,kind,es,r2=>{busy=false;resolve(r,c,a,b,kind,'none',{mult:r1.mult*Math.min(1,r2.mult),rip:0})},'D');
-    },'T');
+      battle(p,q,kind,est,r2=>{
+        busy=false;
+        resolve(r,c,a,b,kind,'none',{mult:r1.mult*Math.min(1,r2.mult),rip:0});
+      },'LOCAL_DEF',{r,c,a,b,back});
+    },'LOCAL_ATK',{r,c,a,b,back});
     return;
   }
-  if(back||q.sta<1){resolve(r,c,a,b,kind,'none');return}
-  if(human(q.s)){
-    busy=true;$('dq').textContent=`${nm(p)} ataca ${nm(q)} (fôlego do agressor ${p.sta}/${p.sm}). Como reagir?`;$('df').className='on';
-    window.cb=d=>{$('df').className='';busy=false;resolve(r,c,a,b,kind,d)};
-  }else resolve(r,c,a,b,kind,aiDef(q,kind));
-}
-
-function aiDef(q,kind){
-  if(q.sta<1)return'none';
-  return Math.random()<[.25,.55,.8][lvl]?(kind==='h'?'dodge':'parry'):['dodge','parry','block'][Math.floor(Math.random()*3)];
 }
 
 function resolve(r,c,a,b,kind,def,res){
   const p=bd[r][c],q=bd[a][b];
+  if(!p||!q){busy=false;render();return}
   let d=wd(p)+(kind==='h'?2:0),m='',rip=0;
   if(q.s==='w'?r>a:r<a){d+=3;m+='Backstab! ';snd('crit');shake()}
   if(q.sta<1)d+=2;
   p.sta-=kind==='h'?2:1;
   if(res){
-    d=Math.round(d*res.mult);rip=res.rip;
-    if(!d)m+=human(p.s)?'Golpe errado! ':'Esquiva perfeita! ';
-    else if(res.mult>=1.4)m+='Golpe certeiro! ';
-  }
-  if(def!=='none'){
-    q.sta--;
-    if(def==='dodge'&&kind==='h'){d=0;m+='Esquiva perfeita! ';snd('parry')}
-    else if(def==='parry'&&kind==='l'){d=0;rip=Math.ceil(wd(q)/2);m+='Aparada! Contragolpe! ';snd('parry')}
-    else if(def==='block'){d=Math.max(1,d-2);m+='Bloqueio. '}
-    else m+='Reação errada. ';
+    d=Math.round(d*res.mult);rip=res.rip||0;
+    if(!d)m+='Esquiva perfeita! ';
+    else if(res.mult>=1.4)m+='Golpe devastador! ';
   }
   if(d>0){
     q.hp-=d;fxq.push([a,b,'-'+d]);snd(kind==='h'?'crit':'hit');
@@ -499,50 +612,472 @@ function lvUp(p){
   return` ✦ ${nm(p)} sobe ao nível ${p.lv} (${SK[p.lv]}).`;
 }
 
-function battle(p,q,kind,est,done,mo){
-  const cv=$('cv'),x=cv.getContext('2d'),box={x:60,y:40,w:200,h:150},keys={},msg=t=>$('bm').textContent=t;
-  let ph=mo==='D'?'dodge':human(p.s)?'time':'dodge',sh=p,dur=kind==='h'?6000:4500,t0=performance.now(),hr={x:160,y:115},bl=[],hits=0,sp=0,mult=1,id,ls=0,u=0,fl=0;
-  $('bt').className='on';
-  $('sp').style.display=(human(p.s)&&mo!=='D'&&!q.boss&&q.hp<=Math.ceil(q.m*.4))?'block':'none';
-  $('sp').onclick=()=>fin({spare:1});
-  msg(ph==='time'?'Ataque! Aperte Espaço ou toque quando o marcador cruzar o centro.':'Esquive! Setas, WASD ou arraste o coração.');
-  const fin=r=>{cancelAnimationFrame(id);window.onkeydown=window.onkeyup=cv.onpointerdown=cv.onpointermove=null;$('bt').className='';$('sp').style.display='none';done(r)};
-  const act=()=>{if(ph!=='time')return;mult=Math.max(.2,1.6-Math.abs(u-.5)*3.2);ph='flash';t0=performance.now()};
-  const pm=e=>{if(ph!=='dodge')return;const R=cv.getBoundingClientRect();hr.x=Math.min(box.x+box.w-6,Math.max(box.x+6,(e.clientX-R.left)*320/R.width));hr.y=Math.min(box.y+box.h-6,Math.max(box.y+6,(e.clientY-R.top)*240/R.height))};
-  window.onkeydown=e=>{keys[e.key.toLowerCase()]=1;if(e.key===' '||e.key==='Enter'){e.preventDefault();act()}else if(e.key.startsWith('Arrow'))e.preventDefault()};
-  window.onkeyup=e=>{keys[e.key.toLowerCase()]=0};
-  cv.onpointerdown=e=>{act();pm(e)};cv.onpointermove=pm;
-  const spawn=t=>{
-    const bx=box.x+Math.random()*box.w,by=box.y+Math.random()*box.h,L=Math.random()<.5;
-    if(t==='K')t='PNBRQ'[Math.floor(Math.random()*5)];
-    bl.push(t==='P'?{x:bx,y:box.y-6,vx:0,vy:2.2,r:4}:t==='N'?{x:bx,y:box.y-6,vx:(Math.random()-.5)*1.2,vy:1.6,r:5}:t==='B'?(L?{x:box.x-6,y:by,vx:2.8,vy:0,r:3}:{x:box.x+box.w+6,y:by,vx:-2.8,vy:0,r:3}):t==='R'?{x:bx,y:box.y-10,vx:0,vy:1.3,r:11}:(L?{x:box.x,y:box.y-6,vx:1.6,vy:1.9,r:4}:{x:box.x+box.w,y:box.y-6,vx:-1.6,vy:1.9,r:4}));sp++;
-  };
-  function loop(now){
-    const e=now-t0;x.fillStyle='#000';x.fillRect(0,0,320,240);x.textAlign='center';
-    if(ph==='time'){
-      u=(Math.sin(e/(p.t==='R'?520:p.t==='Q'?260:380))+1)/2;
-      x.font='60px serif';x.fillStyle=q.s==='w'?'#e6d9b0':'#c24a2b';x.fillText(G[q.t]+'\uFE0E',160,100);
-      x.strokeStyle='#fff';x.lineWidth=2;x.strokeRect(20,170,280,26);
-      x.fillStyle='#2a5';x.fillRect(110,172,100,22);x.fillStyle='#7d4';x.fillRect(145,172,30,22);
-      x.fillStyle='#fff';x.fillRect(20+u*280-2,166,4,34);
-    }else if(ph==='flash'){
-      x.fillStyle='#fff';x.font='28px Cinzel,serif';x.fillText(mult>=1.4?'CRÍTICO!':mult<.5?'FRACO…':'BOM!',160,115);
-      if(e>650){
-        if(mo==='T'||est*mult>=q.hp){fin({mult,rip:0});return}
-        ph='dodge';sh=q;dur=4000;t0=now;bl=[];sp=0;hits=0;msg('Contra-ataque! Esquive: setas, WASD ou arraste.');
+// =========================================================================
+// MOTOR DE BATALHA INTERATIVA EM TEMPO REAL (POR VALOR E CLASSE DE PEÇA)
+// =========================================================================
+function createBulletsForSkill(pieceType, skillId, aimX, aimY, box, spdMult, level){
+  const K = spdMult * (1 + 0.08 * (level - 1));
+  const cx = box.x + box.w / 2;
+  const cy = box.y + box.h / 2;
+  const out = [];
+
+  if(pieceType === 'P'){ // SOLDADO (Valor 1): Rápido, lanças diretas, leque e escudo
+    if(skillId === 0){ // Estocada Rápida
+      out.push({x:aimX, y:box.y-6, vx:0, vy:3.1*K, r:4.5, col:'#f5e6be'});
+    } else if(skillId === 1){ // Chuva de Lanças (3 em leque)
+      [-0.75, 0, 0.75].forEach(ang=>{
+        out.push({x:aimX, y:box.y-6, vx:ang*2.1*K, vy:2.7*K, r:4, col:'#ffd27d'});
+      });
+    } else { // Investida de Escudo (onda horizontal larga)
+      for(let i=-2;i<=2;i++){
+        out.push({x:aimX + i*14, y:box.y-6, vx:0, vy:2.3*K, r:5.5, col:'#e0662a'});
       }
-    }else{
-      if(now-ls>(sh===p?(kind==='h'?300:450):520)){spawn(sh.t);ls=now}
-      const s=2.4;
-      if(keys.arrowleft||keys.a)hr.x-=s;if(keys.arrowright||keys.d)hr.x+=s;if(keys.arrowup||keys.w)hr.y-=s;if(keys.arrowdown||keys.s)hr.y+=s;
-      hr.x=Math.min(box.x+box.w-6,Math.max(box.x+6,hr.x));hr.y=Math.min(box.y+box.h-6,Math.max(box.y+6,hr.y));
+    }
+  }
+  else if(pieceType === 'N'){ // CAVALEIRO (Valor 3): Tóxicos, zigue-zague e salto em L
+    if(skillId === 0){ // Lâmina Tóxica (onda senoidal)
+      out.push({x:aimX, y:box.y-6, vx:0, vy:2.1*K, r:5.5, wave:2.4, t0:performance.now(), col:'#7dff7d'});
+      out.push({x:aimX+18, y:box.y-14, vx:0, vy:2.1*K, r:5.5, wave:-2.4, t0:performance.now(), col:'#7dff7d'});
+    } else if(skillId === 1){ // Salto em L (quinas convergem para a mira)
+      const corners=[[box.x-4,box.y-4],[box.x+box.w+4,box.y-4],[box.x-4,box.y+box.h+4],[box.x+box.w+4,box.y+box.h+4]];
+      corners.forEach(([sx,sy])=>{
+        const ang=Math.atan2(aimY-sy, aimX-sx);
+        out.push({x:sx, y:sy, vx:Math.cos(ang)*2.4*K, vy:Math.sin(ang)*2.4*K, r:5, col:'#b2ff66'});
+      });
+    } else { // Nuvem de Pântano (orbe que cresce)
+      out.push({x:aimX, y:box.y-8, vx:(Math.random()-.5)*0.6, vy:1.5*K, r:7, grow:0.06, col:'#59d96b'});
+    }
+  }
+  else if(pieceType === 'B'){ // ARQUEIRO (Valor 3): Flechas lunares velozes e diagonais
+    if(skillId === 0){ // Flecha Lunar teleguiada
+      const sx = Math.random()<.5 ? box.x-6 : box.x+box.w+6;
+      const sy = box.y + 15 + Math.random()*(box.h-30);
+      const ang = Math.atan2(aimY-sy, aimX-sx);
+      out.push({x:sx, y:sy, vx:Math.cos(ang)*3.5*K, vy:Math.sin(ang)*3.5*K, r:4, col:'#9ee7ff'});
+    } else if(skillId === 1){ // Saraivada Diagonal em X
+      [[box.x-4,box.y-4,1,1],[box.x+box.w+4,box.y-4,-1,1]].forEach(([sx,sy,dx,dy])=>{
+        out.push({x:sx, y:sy, vx:dx*2.5*K, vy:dy*1.9*K, r:4.5, col:'#7ac8ff'});
+      });
+    } else { // Chuva de Estrelas das duas laterais
+      out.push({x:box.x-6, y:aimY-14, vx:3.2*K, vy:0, r:3.8, col:'#fff'});
+      out.push({x:box.x+box.w+6, y:aimY+14, vx:-3.2*K, vy:0, r:3.8, col:'#fff'});
+    }
+  }
+  else if(pieceType === 'R'){ // TORRE GIGANTE (Valor 5): Lenta, pesada, rochas gigantes e muralha
+    if(skillId === 0){ // Rocha Esmagadora
+      out.push({x:aimX, y:box.y-14, vx:0, vy:1.75*K, r:14, col:'#d49a5a'});
+    } else if(skillId === 1){ // Muralha Móvel (linha de pedras com 1 brecha na mira)
+      for(let px=box.x+12; px<=box.x+box.w-12; px+=22){
+        if(Math.abs(px - aimX) > 20){
+          out.push({x:px, y:box.y-8, vx:0, vy:1.45*K, r:7.5, col:'#a8896c'});
+        }
+      }
+    } else { // Tremor de Terra (ondas vindas de baixo)
+      [-28, 0, 28].forEach(off=>{
+        out.push({x:aimX+off, y:box.y+box.h+8, vx:0, vy:-2.0*K, r:7, col:'#ff8c42'});
+      });
+    }
+  }
+  else if(pieceType === 'Q'){ // RAINHA DAS CINZAS (Valor 9): Frenética, espirais e tempestade
+    if(skillId === 0){ // Dança Carmesim (espiral de 4 adagas)
+      for(let i=0;i<4;i++){
+        const a = (performance.now()/220) + (i * Math.PI/2);
+        out.push({x:aimX + Math.cos(a)*26, y:box.y-4, vx:Math.cos(a)*1.4*K, vy:2.6*K, r:4.2, col:'#ff4d6d'});
+      }
+    } else if(skillId === 1){ // Corte Cruzado (vertical + horizontal na mira)
+      out.push({x:aimX, y:box.y-6, vx:0, vy:3.3*K, r:4.8, col:'#ff758f'});
+      out.push({x:box.x-6, y:aimY, vx:3.3*K, vy:0, r:4.8, col:'#ff758f'});
+    } else { // Tempestade de Sangue (6 projéteis radiais convergindo)
+      for(let i=0;i<6;i++){
+        const a = (i / 6) * Math.PI * 2;
+        const sx = aimX + Math.cos(a)*95, sy = aimY + Math.sin(a)*95;
+        out.push({x:sx, y:sy, vx:-Math.cos(a)*2.3*K, vy:-Math.sin(a)*2.3*K, r:4, col:'#ff2a4b'});
+      }
+    }
+  }
+  else { // SENHOR DAS CINZAS / REI (Valor 100): Chamas reais, raios e anel de fogo
+    if(skillId === 0){ // Chama Real (se divide em 2)
+      out.push({x:aimX, y:box.y-8, vx:0, vy:2.0*K, r:7, split:1, col:'#ff9e2c'});
+    } else if(skillId === 1){ // Julgamento das Cinzas (3 colunas de brasas)
+      [-26, 0, 26].forEach(off=>{
+        out.push({x:aimX+off, y:box.y-6, vx:0, vy:2.8*K, r:5.5, col:'#ffd166'});
+      });
+    } else { // Coroa de Fogo (anel fechando no centro)
+      for(let i=0;i<8;i++){
+        const a = (i/8)*Math.PI*2;
+        const sx = cx + Math.cos(a)*105, sy = cy + Math.sin(a)*85;
+        out.push({x:sx, y:sy, vx:-Math.cos(a)*1.7*K, vy:-Math.sin(a)*1.7*K, r:5, col:'#ff5400'});
+      }
+    }
+  }
+  return out;
+}
+
+function battle(p, q, kind, est, done, modeTag, meta){
+  const cv=$('cv'), x=cv.getContext('2d');
+  const box={x:60,y:40,w:200,h:150};
+  const keys={};
+  const msg=t=>$('bm').textContent=t;
+  const deck=$('atk-deck');
+
+  const pStat=ST[p.t], qStat=ST[q.t];
+  $('bt-atk-name').textContent=`${nm(p)} (Val. ${pStat.val===100?'★':pStat.val})`;
+  $('bt-atk-spd').textContent=`Vel. Ataque: ${pStat.atkLabel}`;
+  $('bt-def-name').textContent=`${nm(q)} (Val. ${qStat.val===100?'★':qStat.val})`;
+  $('bt-def-spd').textContent=`Vel. Esquiva: ${qStat.dgeLabel}`;
+
+  // Define papel nesta arena:
+  // 'ATK' = jogador controla a mira e dispara os 3 ataques da peça
+  // 'DEF' = jogador controla o coração ♥ e esquiva
+  let role = 'ATK';
+  if(modeTag === 'SOLO_DEF' || modeTag === 'LOCAL_DEF' || modeTag === 'ONLINE_DEF'){
+    role = 'DEF';
+  }
+
+  let ph = (role === 'ATK' && modeTag !== 'ONLINE_DEF') ? 'time' : 'arena';
+  // Se for defesa online, vai direto para a arena receber os disparos do amigo!
+  if(modeTag === 'ONLINE_DEF') ph = 'arena';
+
+  let dur = kind==='h' ? 6200 : 4800;
+  let t0 = performance.now();
+  let hr = {x:160, y:115}; // Posição do coração ♥ (defensor)
+  let aim = {x:160, y:115}; // Posição da mira (atacante)
+  let bl = [], hits = 0, sp = 0, mult = 1, id, u = 0, fl = 0;
+  let energy = 100, lastShot = 0, aiNextShot = 0;
+  const maxEnergy = 100;
+  const regenRate = 24 * pStat.atkSpd; // Peças rápidas regeneram energia de disparo mais rápido
+  const shotCooldown = pStat.cd;
+
+  $('bt').className='on';
+  $('sp').style.display=(role==='ATK' && !q.boss && q.hp<=Math.ceil(q.m*.4))?'block':'none';
+  $('sp').onclick=()=>fin({spare:1});
+
+  // Monta os 3 botões de habilidade da peça atacante
+  const skills = PIECE_SKILLS[p.t];
+  deck.innerHTML='';
+  skills.forEach(sk=>{
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='sk-btn';
+    b.id='sk-btn-'+sk.id;
+    b.innerHTML=`<strong>[${sk.key}] ${sk.name}</strong><small>${sk.desc}</small><span class="cost">⚡ ${sk.cost} Energia</span>`;
+    b.onclick=()=>triggerSkill(sk.id);
+    deck.appendChild(b);
+  });
+
+  function updateDeckUI(){
+    if(role !== 'ATK' || ph !== 'arena'){
+      deck.classList.remove('on');
+      return;
+    }
+    deck.classList.add('on');
+    const now=performance.now();
+    const onCd = (now - lastShot) < shotCooldown;
+    skills.forEach(sk=>{
+      const btn=$('sk-btn-'+sk.id);
+      if(btn) btn.disabled = energy < sk.cost || onCd;
+    });
+  }
+
+  function triggerSkill(skillId){
+    if(ph !== 'arena' || role !== 'ATK') return;
+    const sk = skills[skillId];
+    const now = performance.now();
+    if(!sk || energy < sk.cost || (now - lastShot) < shotCooldown) return;
+    energy -= sk.cost;
+    lastShot = now;
+    snd('shoot');
+
+    const newBullets = createBulletsForSkill(p.t, skillId, aim.x, aim.y, box, pStat.atkSpd, p.lv);
+    bl.push(...newBullets);
+    sp += newBullets.length;
+
+    // Envia disparo em tempo real para o amigo no modo online!
+    if(conn && netReady && modeTag === 'ONLINE_ATK'){
+      conn.send({
+        type:'shot',
+        pieceType: p.t,
+        skillId: skillId,
+        aimX: aim.x,
+        aimY: aim.y,
+        spdMult: pStat.atkSpd,
+        lv: p.lv
+      });
+    }
+    updateDeckUI();
+  }
+
+  // Recebe disparos vindos do amigo online em tempo real
+  activeBattle = {
+    onRemoteShot:(d)=>{
+      if(ph !== 'arena') return;
+      snd('shoot');
+      const remoteBullets = createBulletsForSkill(d.pieceType, d.skillId, d.aimX, d.aimY, box, d.spdMult, d.lv);
+      bl.push(...remoteBullets);
+      sp += remoteBullets.length;
+    },
+    onRemoteHeart:(d)=>{
+      if(role === 'ATK'){
+        hr.x = d.x; hr.y = d.y;
+      }
+    },
+    onRemoteEnd:(d)=>{
+      if(role === 'ATK'){
+        fin({mult: mult * d.defMult, rip: 0});
+      }
+    }
+  };
+
+  if(ph === 'time'){
+    msg('Precisão! Aperte Espaço ou toque quando o marcador cruzar o centro.');
+  } else if(role === 'ATK'){
+    msg(`Arena de Ataque! Mova a mira e use [1], [2], [3] para disparar os ataques de ${nm(p)}!`);
+  } else {
+    msg(`Esquive! Mova o coração ♥ (Vel. ${qStat.dodgeSpd}) com WASD, Setas ou arrastando!`);
+  }
+
+  const fin=r=>{
+    cancelAnimationFrame(id);
+    activeBattle=null;
+    window.onkeydown=window.onkeyup=cv.onpointerdown=cv.onpointermove=null;
+    deck.classList.remove('on');
+    $('bt').className='';
+    $('sp').style.display='none';
+    done(r);
+  };
+
+  const actTime=()=>{
+    if(ph!=='time')return;
+    mult=Math.max(.35, 1.65 - Math.abs(u-.5)*3.1);
+    ph='flash';
+    t0=performance.now();
+  };
+
+  const movePointer=e=>{
+    const R=cv.getBoundingClientRect();
+    const px=Math.min(box.x+box.w-6,Math.max(box.x+6,(e.clientX-R.left)*320/R.width));
+    const py=Math.min(box.y+box.h-6,Math.max(box.y+6,(e.clientY-R.top)*240/R.height));
+    if(ph==='arena'){
+      if(role==='DEF'){hr.x=px;hr.y=py}
+      else{aim.x=px;aim.y=py}
+    }
+  };
+
+  window.onkeydown=e=>{
+    const k=e.key.toLowerCase();
+    keys[k]=1;
+    if(ph==='time' && (e.key===' '||e.key==='Enter')){e.preventDefault();actTime()}
+    else if(ph==='arena' && role==='ATK'){
+      if(k==='1')triggerSkill(0);
+      else if(k==='2')triggerSkill(1);
+      else if(k==='3')triggerSkill(2);
+    }
+    if(e.key.startsWith('Arrow'))e.preventDefault();
+  };
+  window.onkeyup=e=>{keys[e.key.toLowerCase()]=0};
+  cv.onpointerdown=e=>{
+    if(ph==='time'){actTime();return}
+    movePointer(e);
+    if(ph==='arena' && role==='ATK'){
+      // Clique no canvas dispara a habilidade que tiver energia disponível
+      if(energy>=skills[2].cost)triggerSkill(2);
+      else if(energy>=skills[1].cost)triggerSkill(1);
+      else triggerSkill(0);
+    }
+  };
+  cv.onpointermove=movePointer;
+
+  let prevNow = performance.now();
+  let lastHeartSync = 0;
+
+  function loop(now){
+    const dt = Math.min(0.05, (now - prevNow) / 1000);
+    prevNow = now;
+    const e = now - t0;
+
+    x.fillStyle='#000';x.fillRect(0,0,320,240);x.textAlign='center';
+
+    if(ph==='time'){
+      const oscSpeed = p.t==='R'?500 : (p.t==='Q'?250 : (p.t==='P'||p.t==='B'?320 : 380));
+      u=(Math.sin(e/oscSpeed)+1)/2;
+      x.font='58px serif';x.fillStyle=q.s==='w'?'#e6d9b0':'#c24a2b';
+      x.fillText(G[q.t]+'\uFE0E',160,96);
+      x.font='12px Cinzel,serif';x.fillStyle='#8d8576';
+      x.fillText(`Alvo: ${nm(q)} · PV ${q.hp}/${q.m}`,160,126);
+      x.strokeStyle='#fff';x.lineWidth=2;x.strokeRect(20,165,280,26);
+      x.fillStyle='#2a5';x.fillRect(110,167,100,22);
+      x.fillStyle='#7d4';x.fillRect(145,167,30,22);
+      x.fillStyle='#fff';x.fillRect(20+u*280-2,161,4,34);
+    }
+    else if(ph==='flash'){
+      x.fillStyle='#fff';x.font='26px Cinzel,serif';
+      x.fillText(mult>=1.4?'PRECISÃO CRÍTICA!':mult<.6?'GOLPE RASPÃO…':'BOM GOLPE!',160,115);
+      if(e>550){
+        // Se for backstab ou defensor sem fôlego ou golpe letal imediato no modo local, finaliza
+        if(modeTag==='LOCAL_ATK' || est*mult>=q.hp*1.4 || meta?.back || q.sta<1){
+          fin({mult,rip:0});return;
+        }
+        // Notifica o oponente online para abrir a arena de esquiva dele agora!
+        if(conn && netReady && modeTag==='ONLINE_ATK'){
+          conn.send({
+            type:'start_def',
+            r:meta.r, c:meta.c, a:meta.a, b:meta.b,
+            kind, es:est, m:mult
+          });
+        }
+        ph='arena';
+        t0=now;bl=[];sp=0;hits=0;energy=100;
+        msg(role==='ATK'
+          ? `Sua vez de atacar! Mova a mira e aperte [1], [2] ou [3] para disparar!`
+          : `Esquive dos ataques de ${nm(p)}! (Vel. Esquiva: ${qStat.dodgeSpd})`);
+        updateDeckUI();
+      }
+    }
+    else {
+      // === FASE DE ARENA INTERATIVA EM TEMPO REAL ===
+      if(role === 'ATK'){
+        energy = Math.min(maxEnergy, energy + regenRate * dt);
+        updateDeckUI();
+
+        // Movimento da mira do atacante pelo teclado
+        const aimSpd = 3.4;
+        if(keys.arrowleft||keys.a)aim.x-=aimSpd;
+        if(keys.arrowright||keys.d)aim.x+=aimSpd;
+        if(keys.arrowup||keys.w)aim.y-=aimSpd;
+        if(keys.arrowdown||keys.s)aim.y+=aimSpd;
+        aim.x=Math.min(box.x+box.w-8,Math.max(box.x+8,aim.x));
+        aim.y=Math.min(box.y+box.h-8,Math.max(box.y+8,aim.y));
+
+        // No modo Solo (Jogador atacando IA), a IA esquiva do coração conforme a velocidade da peça inimiga!
+        if(!conn && modeTag==='SOLO_ATK'){
+          const aiSpd = qStat.dodgeSpd * 0.72;
+          let dodgeX = 0, dodgeY = 0;
+          bl.forEach(b=>{
+            const dist = Math.hypot(b.x - hr.x, b.y - hr.y);
+            if(dist < 52){
+              dodgeX += (hr.x - b.x) / (dist || 1);
+              dodgeY += (hr.y - b.y) / (dist || 1);
+            }
+          });
+          if(dodgeX || dodgeY){
+            const len = Math.hypot(dodgeX, dodgeY) || 1;
+            hr.x += (dodgeX / len) * aiSpd;
+            hr.y += (dodgeY / len) * aiSpd;
+          } else {
+            hr.x += Math.sin(now/420) * (aiSpd * 0.5);
+          }
+          hr.x=Math.min(box.x+box.w-7,Math.max(box.x+7,hr.x));
+          hr.y=Math.min(box.y+box.h-7,Math.max(box.y+7,hr.y));
+        }
+      } else {
+        // DEFENSOR (Jogador esquivando com a velocidade real da peça!)
+        const dSpd = qStat.dodgeSpd;
+        if(keys.arrowleft||keys.a)hr.x-=dSpd;
+        if(keys.arrowright||keys.d)hr.x+=dSpd;
+        if(keys.arrowup||keys.w)hr.y-=dSpd;
+        if(keys.arrowdown||keys.s)hr.y+=dSpd;
+        hr.x=Math.min(box.x+box.w-6,Math.max(box.x+6,hr.x));
+        hr.y=Math.min(box.y+box.h-6,Math.max(box.y+6,hr.y));
+
+        // Sincroniza posição do coração para o atacante online ver onde você está esquivando
+        if(conn && netReady && modeTag==='ONLINE_DEF' && now - lastHeartSync > 65){
+          lastHeartSync = now;
+          conn.send({type:'heart', x:Math.round(hr.x), y:Math.round(hr.y)});
+        }
+
+        // Se for IA atacando no modo Solo, a IA escolhe entre os 3 ataques da peça dela respeitando a cadência!
+        if(!conn && modeTag==='SOLO_DEF' && now > aiNextShot){
+          const skIdx = Math.floor(Math.random()*3);
+          const aiBullets = createBulletsForSkill(p.t, skIdx, hr.x + (Math.random()-.5)*28, hr.y, box, pStat.atkSpd, p.lv);
+          bl.push(...aiBullets);
+          sp += aiBullets.length;
+          snd('shoot');
+          aiNextShot = now + (pStat.cd * (kind==='h' ? 0.85 : 1.1));
+        }
+      }
+
+      // Desenha caixa da arena
       x.strokeStyle='#fff';x.lineWidth=3;x.strokeRect(box.x,box.y,box.w,box.h);
+
+      // Atualiza e desenha projéteis
+      const nextBl = [];
+      bl.forEach(b=>{
+        if(b.wave){
+          b.x += Math.sin((now - b.t0)/120) * b.wave;
+        }
+        if(b.grow){
+          b.r = Math.min(22, b.r + b.grow);
+        }
+        b.x += b.vx;
+        b.y += b.vy;
+
+        // Chama Real do Senhor se divide ao chegar no meio da caixa
+        if(b.split && b.y > box.y + box.h*0.42){
+          b.split = 0;
+          nextBl.push({x:b.x, y:b.y, vx:-1.7*pStat.atkSpd, vy:1.8*pStat.atkSpd, r:5, col:'#ffb703'});
+          nextBl.push({x:b.x, y:b.y, vx:1.7*pStat.atkSpd, vy:1.8*pStat.atkSpd, r:5, col:'#ffb703'});
+          return;
+        }
+
+        x.fillStyle = b.col || '#fff';
+        x.beginPath();x.arc(b.x,b.y,b.r,0,Math.PI*2);x.fill();
+
+        if(!b.h && Math.hypot(b.x-hr.x, b.y-hr.y) < b.r + 5){
+          b.h = 1;
+          hits++;
+          fl = now + 150;
+          snd('hit');
+        }
+        if(b.y < 238 && b.y > 10 && b.x > 15 && b.x < 305){
+          nextBl.push(b);
+        }
+      });
+      bl = nextBl;
+
+      // Desenha mira do atacante (se for atacante)
+      if(role === 'ATK'){
+        x.strokeStyle='#e0662a';x.lineWidth=1.5;
+        x.beginPath();x.arc(aim.x,aim.y,9,0,Math.PI*2);x.stroke();
+        x.beginPath();x.moveTo(aim.x-13,aim.y);x.lineTo(aim.x+13,aim.y);x.moveTo(aim.x,aim.y-13);x.lineTo(aim.x,aim.y+13);x.stroke();
+
+        // Barra de Energia de Ataque no topo
+        x.fillStyle='#2a1d12';x.fillRect(60,18,200,8);
+        x.fillStyle='#e0662a';x.fillRect(60,18,200*(energy/maxEnergy),8);
+        x.strokeStyle='#c9a74f';x.lineWidth=1;x.strokeRect(60,18,200,8);
+      }
+
+      // Desenha o Coração ♥ (Defensor)
+      x.fillStyle = fl>now ? '#fff' : '#ff2a2a';
+      x.font = '16px serif';
+      x.fillText('♥', hr.x, hr.y+5);
+
+      // Contador de acertos e barra de tempo restante
+      x.font='11px Cinzel,serif';x.fillStyle='#e6d9b0';
+      x.fillText(`Impactos: ${hits}`, 160, 212);
       x.fillStyle='#fff';
-      const K=1+.12*(sh.lv-1);bl.forEach(b=>{b.x+=b.vx*K;b.y+=b.vy*K;x.beginPath();x.arc(b.x,b.y,b.r,0,7);x.fill();if(!b.h&&Math.hypot(b.x-hr.x,b.y-hr.y)<b.r+5){b.h=1;hits++;fl=now+150;snd('hit')}});
-      bl=bl.filter(b=>b.y<235&&b.x>-20&&b.x<340);
-      x.fillStyle=fl>now?'#fff':'#f22';x.font='16px serif';x.fillText('♥',hr.x,hr.y+5);
-      x.fillStyle='#fff';x.fillRect(20,222,280*Math.max(0,1-e/dur),5);
-      if(e>dur){fin(human(p.s)&&mo!=='D'?{mult,rip:Math.min(3,hits)}:{mult:hits?Math.min(1.4,hits/Math.max(1,sp*.5)):0,rip:0});return}
+      x.fillRect(20,222,280*Math.max(0,1-e/dur),5);
+
+      if(e > dur){
+        if(role === 'ATK'){
+          // No modo solo, cada impacto do jogador aumenta o multiplicador de dano!
+          if(!conn){
+            const bonusMult = Math.min(1.5, 0.7 + hits * 0.14);
+            fin({mult: mult * bonusMult, rip:0});
+          } else {
+            // No online, aguarda o defensor enviar o resultado da esquiva (com fallback de segurança)
+            msg('Calculando resultado do duelo…');
+            setTimeout(()=>{if(activeBattle)fin({mult,rip:0})},1200);
+          }
+        } else {
+          // Defensor concluiu a esquiva
+          const defMult = hits === 0 ? 0 : Math.min(1.35, 0.45 + hits * 0.22);
+          if(conn && netReady && modeTag==='ONLINE_DEF'){
+            conn.send({type:'def_end', defMult});
+          }
+          fin({mult: defMult, rip: Math.min(3, hits)});
+        }
+        return;
+      }
     }
     id=requestAnimationFrame(loop);
   }
@@ -720,6 +1255,17 @@ function render(){
   const p=sel&&bd[sel.r][sel.c];
   $('nm').textContent=p?nm(p):(human(turn)?(mode==='2'?(turn==='w'?'Vez das Brancas':'Vez das Pretas'):'Selecione uma peça'):'O inimigo se move…');
   $('st').textContent=p?`${ST[p.t].w} · dano ${wd(p)} · Nv ${p.lv} · PV ${p.hp}/${p.m} · fôlego ${p.sta}/${p.sm}${p.fx?(p.fx.k==='bl'?' · sangrando':' · envenenado'):''}`:'';
+
+  const pills=$('sp-pills');
+  if(p){
+    pills.style.display='flex';
+    $('pill-atk').textContent=`⚡ Vel. Ataque: ${ST[p.t].atkLabel}`;
+    $('pill-dge').textContent=`♥ Vel. Esquiva: ${ST[p.t].dgeLabel}`;
+    $('pill-val').textContent=`👑 Valor: ${ST[p.t].val===100?'Rei':ST[p.t].val}`;
+  }else{
+    pills.style.display='none';
+  }
+
   $('lore').textContent=p?ST[p.t].l+(p.lv>1?' ['+SK.slice(2,p.lv+1).join(' · ')+']':''):'';
   $('fl').textContent=`Estus: Brancas ${flask.w} · Pretas ${flask.b}`;
   $('est').disabled=!(p&&flask[p.s]>0&&p.hp<p.m&&human(turn)&&!busy&&!over);
@@ -753,7 +1299,6 @@ function shop(){
       if(U.souls>=c){
         U.souls-=c;U[k]++;save();
         $('log').textContent='Melhoria forjada! Já está ativa no seu exército.';
-        // Aplica imediatamente na partida em andamento para peças aliadas
         for(let r=0;r<8;r++)for(let col=0;col<8;col++){
           const p=bd[r][col];
           if(p&&p.s===me&&k==='vig'){p.m++;p.hp++}
@@ -793,10 +1338,10 @@ function drone(){
 document.addEventListener('pointerdown',()=>{if(!mute&&!dr)drone()},{once:true});
 
 const TU=[
-  'Bem-vindo, Cinzento. Mova as peças como no xadrez e abata o Senhor inimigo (☠).',
-  'Selecione uma peça, escolha Golpe Leve ou Pesado e clique em ⚔️ ATACAR INIMIGO (ou direto na peça marcada com ⚔).',
-  'Use Almas na Forja das Cinzas ao lado para aumentar dano, vida e frascos de Estus.',
-  'Para jogar online com amigos, clique em Criar Sala, copie o código e envie para ele entrar.'
+  'Bem-vindo, Cinzento. Cada peça agora possui velocidade de ataque, velocidade de esquiva e 3 ataques exclusivos na Arena!',
+  'Selecione uma peça, escolha Golpe Leve ou Pesado e clique em ⚔️ ATACAR INIMIGO.',
+  'Na Arena de Batalha, use [1], [2], [3] (ou clique nos botões) e mova a mira para disparar seus ataques contra o coração do oponente!',
+  'Peças leves (Peão, Arqueiro, Rainha) são velozes; a Torre Gigante é pesada e lenta, mas devasta a arena.'
 ];
 let ti=0;
 function tut(i){ti=i;$('tp').textContent=TU[i];$('tn').textContent=i<TU.length-1?'Próximo':'Entendi';$('tu').className='on'}
@@ -824,14 +1369,15 @@ function recv(d){
   finish();render();
 }
 
-function defend(d){
+function defendOnline(d){
   const p=bd[d.r][d.c],q=bd[d.a][d.b];
   if(!p||!q||q.s!==me)return;
-  busy=true;$('log').textContent='Você está sendo atacado! Esquive!';
+  busy=true;$('log').textContent='Você está sendo atacado! Esquive dos ataques do seu amigo!';
   battle(p,q,d.kind,d.es,r2=>{
     busy=false;
-    resolve(d.r,d.c,d.a,d.b,d.kind,'none',{mult:d.m*Math.min(1,r2.mult),rip:0});
-  },'D');
+    // O defensor apenas fecha a arena e aguarda o sync do atacante que já recebeu 'def_end'
+    render();
+  },'ONLINE_DEF');
 }
 
 function bindConn(c){
@@ -844,7 +1390,10 @@ function bindConn(c){
   });
   c.on('data',msg=>{
     if(msg.type==='st')recv(msg);
-    else if(msg.type==='atk')defend(msg);
+    else if(msg.type==='start_def')defendOnline(msg);
+    else if(msg.type==='shot' && activeBattle)activeBattle.onRemoteShot(msg);
+    else if(msg.type==='heart' && activeBattle)activeBattle.onRemoteHeart(msg);
+    else if(msg.type==='def_end' && activeBattle)activeBattle.onRemoteEnd(msg);
   });
   c.on('close',()=>{
     netReady=false;
@@ -911,7 +1460,12 @@ $('mk').onclick=()=>startOnline('w');
 $('jn').onclick=()=>startOnline('b');
 $('lv-net').onclick=leaveRoom;
 $('cp').onclick=()=>{
-  navigator.clipboard?.writeText(roomCode.toUpperCase());
+  const tmp=document.createElement('textarea');
+  tmp.value=roomCode.toUpperCase();
+  document.body.appendChild(tmp);
+  tmp.select();
+  try{document.execCommand('copy')}catch(e){}
+  document.body.removeChild(tmp);
   $('cp').textContent='Copiado!';
   setTimeout(()=>$('cp').textContent='Copiar código',1500);
 };
